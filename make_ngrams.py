@@ -11,7 +11,7 @@ import pickle
 def pickle_helper(text_path, gram):
     text = ""
     with open(text_path, "r") as f:
-        text = f.read().decode("utf8")
+        text = f.read()
     token = nltk.word_tokenize(text)
     word_count = len(token)
     if gram == 1:
@@ -32,7 +32,7 @@ def pickle_ngrams(root, pickles):
     for i in ngram_types:
         for path in zip(filepaths, os.listdir(root)):
             tup = (pickle_helper(path[0], i))
-            pickle.dump(tup, open(os.path.join(pickles, str(i) + path[1]),"w"))
+            pickle.dump(tup, open(os.path.join(pickles, str(i) + path[1]),"wb"))
 
 
 if __name__ == "__main__":

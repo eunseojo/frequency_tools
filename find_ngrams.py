@@ -24,7 +24,7 @@ def ngrams_by_year(word, gram, lemat_bool):
     if lemat_bool:
         root = "/Users/eunseo/Projects/rostow_network/lemat_pickles"
     else:
-        root = "/Users/eunseo/Projects/rostow_network/pickles_for_ngrams"
+        root = "/Users/eunseo/Desktop/frequency_tools/pickles"
     files = os.listdir(root)
     selected_paths = [os.path.join(root, f) for f in files if f[0] == str(gram)]
     selected_paths.sort(key=lambda path: int(path[-4:]))
@@ -33,7 +33,7 @@ def ngrams_by_year(word, gram, lemat_bool):
     if gram > 1:
         word = ngrams_by_year_helper(word)
     for path in selected_paths:
-        tup = pickle.load(open(path, "r"))
+        tup = pickle.load(open(path, "rb"))
         counter = tup[0]
         wc = tup[1]
         total_words = grab_all_cognates(word, counter)
@@ -48,9 +48,9 @@ def graph_ngrams(word, rel_freq):
     for freq in rel_freq:
         x.append(int(freq[1][1:]))
         y.append(freq[0])
-    pickle.dump((x,y), open(word,"w"))
-    xlabels = [year for year in x if year%5==0]
-    plt.plot(x,y)
+    pickle.dump((x,y), open(word,"wb"))
+    xlabels = [year for year in x[80:] if year%5==0]
+    plt.plot(x[80:],y[80:])
     plt.xticks(xlabels, xlabels, rotation='vertical')
     plt.title(word)
     plt.savefig(word)
@@ -61,8 +61,9 @@ def graph_ngrams(word, rel_freq):
 
 
 if __name__ == "__main__":
-    word = ["mass consumption"]
-    rel_freq = ngrams_by_year(word,2, lemat_bool=False)
-    file_name = "mass_consumption_lemma"
-    print rel_freq
+    word = ["self determination"]
+    n = len(word[0].split())
+    rel_freq = ngrams_by_year(word,n, lemat_bool=False)
+    file_name = "self_determination"
+    print (rel_freq)
     graph_ngrams(file_name, rel_freq)
