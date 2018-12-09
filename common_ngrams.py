@@ -38,6 +38,6 @@ if __name__ == "__main__":
     paths = [os.path.join(root, file) for file in os.listdir(root) if file[0] == str(ngram)]
     paths.sort()
     #paths = ["/Users/eunseo/rostow_network/years/1952", "/Users/eunseo/rostow_network/years/1962"]
-    phrase = ["his"]  #start w just single words
-    pickle_path = "his_bigrams"
+    phrase = ["penetration"]  #start w just single words
+    pickle_path = "penetration_ngrams"
     iterate_years(phrase, paths, pickle_path)

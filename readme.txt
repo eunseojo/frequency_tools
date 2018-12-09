@@ -8,7 +8,7 @@ To make ngrams, build the freq files in the following order:
 1) make_yearly_files.py
 2) make_pickles_lemmat.py
 
-To call ngrams and and graph freq:
+To call ngrams and graph freq:
 1) find_ngrams.py : This file searches freq of given phrase (up to 4 tokens) and charts relative freq. over the years
 
 

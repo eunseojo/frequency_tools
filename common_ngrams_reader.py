@@ -28,9 +28,9 @@ This file reads in the common ngrams with given word saved in pickle through com
 
 
 
-file_path = "/Users/eunseo/Desktop/frequency_tools/his_bigrams"
+file_path = "/Users/eunseo/Desktop/frequency_tools/penetration_ngrams"
 years = pickle.load(open(file_path, "rb"))
 for y in years: ##y[1]: list of tuple of tuples
     for tup in y[1]:
-        if tup[0][0] == 'his':
+        if tup[0][1] == 'penetration':
             print (y[0], tup)

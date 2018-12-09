@@ -10,10 +10,15 @@ import numpy as np
 
 
 def grab_all_cognates(words, counter):
+    #implement grab cognates
     print(words)
+    print(counter[words])
     return counter[words]
 
 def ngrams_by_year_helper(word):
+    word = word[0]
+    print(word)
+    print (tuple(word.split(" ")))
     return tuple(word.split(" "))
 
 ##return the counts of one-grams by year
@@ -27,16 +32,26 @@ def ngrams_by_year(word, gram, lemat_bool):
     selected_paths.sort(key=lambda path: int(path[-4:]))
     #print selected_paths
     all_counts = []
+    years = []
     if gram > 1:
+
         word = ngrams_by_year_helper(word)
     for path in selected_paths:
+
         tup = pickle.load(open(path, "rb"))
         counter = tup[0]
+        #print(counter)
+        if gram > 1:
+            total_words = grab_all_cognates(word, counter)
+        else:
+
+            total_words = grab_all_cognates(word[0], counter)
         wc = tup[1]
-        total_words = grab_all_cognates(word, counter)
         tup_to_append = (float(total_words/wc), path[-5:])
+        years.append(path[-5:])
         all_counts.append(tup_to_append)
-    return all_counts[80:]
+
+    return all_counts[42:-2] #1860-1980
 
 def graph_ngrams(word, rel_freq):
     x = []
@@ -47,7 +62,8 @@ def graph_ngrams(word, rel_freq):
         y.append(freq[0])
     pickle.dump((x,y), open(word,"wb"))
     xlabels = [year for year in x if year%5==0]
-    plt.plot(x,y)
+    pp = plt.plot(x,y, label=word)
+    plt.legend(pp)
     plt.xticks(xlabels, xlabels, rotation='vertical')
     plt.title(word)
     plt.savefig(word)
@@ -55,7 +71,6 @@ def graph_ngrams(word, rel_freq):
     # fig, ax = plt.subplots()
     # ax.plot(x, y)
     # plt.savefig(word)
-
 
 def ngrams_multiple_words(list_words, filename):   #only works for single words
     frequencies = []
@@ -74,21 +89,22 @@ def ngrams_multiple_words(list_words, filename):   #only works for single words
 
 
 if __name__ == "__main__":
-    # word = ["self determination"]
-    # n = len(word[0].split())
-    # rel_freq = ngrams_by_year(word, n, lemat_bool=False) ###lemat bool determines - it is looking at the lemmatized files
-    # file_name = "_".join(word)
-    # print (rel_freq)
-    # graph_ngrams(file_name, rel_freq)
+    word = ['self determination']
+    n = len(word[0].split())
+    rel_freq = ngrams_by_year(word, n, lemat_bool=False) ###lemat bool determines - it is looking at the lemmatized files
+    file_name = "_".join(word)
+    print (rel_freq)
+    graph_ngrams(file_name, rel_freq)
 
 
-    list_of_words = ["adolescent", "mature", "infantile", "child", "childlike", "childlike", "boy", "boyish", "childish", "adult",
+    list_of_words = ["adolescent", "mature", "infantile", "childlike","boyish", "childish", "young", "old","child","boy",
                      "infant", "girlish", "girl", "pubescent", "embryonic", "fledgling", "developing", "develop", "growing",
-                     "burgeoning", "nascent", "young", "budding", "juvenile", "baby", "babyish"]
+                     "burgeoning", "nascent", "budding", "juvenile", "baby", "babyish"]
 
-    female_pronouns = ["she", "her", "hers", "herself"]
-    male_pronouns = ["he", "his", "himself"]
+    # female_pronouns = ["she", "her", "hers", "herself"]
+    # male_pronouns = ["he", "his", "himself"]
+    #
+    #
+    # ngrams_multiple_words(female_pronouns, "f_pronouns")
+    # ngrams_multiple_words(male_pronouns, "m_pronouns")
 
-
-    ngrams_multiple_words(female_pronouns, "f_pronouns")
-    ngrams_multiple_words(male_pronouns, "m_pronouns")
